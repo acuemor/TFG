@@ -1,6 +1,6 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['starterServices'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', ['$scope','$ionicModal','$timeout','loginService',function($scope, $ionicModal, $timeout, loginService) {
   // Form data for the login modal
   $scope.loginData = {};
 
@@ -23,6 +23,9 @@ angular.module('starter.controllers', [])
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
+    loginService.getAll({},function(loginCredentialList){
+      console.log(loginCredentialList);
+    });
     console.log('Doing login', $scope.loginData);
 
     // Simulate a login delay. Remove this and replace with your login
@@ -31,7 +34,7 @@ angular.module('starter.controllers', [])
       $scope.closeLogin();
     }, 1000);
   };
-})
+}])
 
 .controller('PlaylistsCtrl', function($scope) {
   $scope.playlists = [
@@ -43,6 +46,12 @@ angular.module('starter.controllers', [])
     { title: 'Cowbell', id: 6 }
   ];
 })
+
+.controller('LoginCredentialsCtrl', ['$scope','$ionicModal','$timeout','loginService',function($scope, $ionicModal, $timeout, loginService) {
+  $scope.credentials = loginService.getAll({},function(loginCredentialList){
+    console.log(loginCredentialList);
+  });
+}])
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 });
