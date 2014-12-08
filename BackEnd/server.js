@@ -6,13 +6,19 @@
 var mongoose   = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/physiappDb'); // connect to our database
 var LoginCredentials     = require('./app/models/loginCredentials');
+var Login    = require('./app/models/login');
 
 // call the packages we need
 var express    = require('express'); 		// call express
 var app        = express(); 				// define our app using express
 var bodyParser = require('body-parser');
 
-// configure app to use bodyParser()
+var passport = require('./auth');
+
+//Inicio borrar
+var passport = require('passport'),LocalStrategy = require('passport-local').Strategy;
+
+
 // // Enables CORS
 var enableCORS = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -31,9 +37,18 @@ var enableCORS = function(req, res, next) {
  
 // enable CORS!
 app.use(enableCORS);
+
+//Passport initialization
+app.use(passport.initialize());  
+app.use(passport.session());  
+
+// configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+//app.use(express.cookieParser());
+
 
 var port = process.env.PORT || 8080; 		// set our port
 
@@ -137,11 +152,44 @@ router.route('/loginCredentials/:loginCredentials_id')
 	});
 
 
+/*Handle the login request with authenticate method*/
+/*app.post('/login',
+  passport.authenticate('local', { successRedirect: 'http://localhost:8100/#/app/loginCredentials',
+                                   failureRedirect: 'http://localhost:8100/#/app/login',
+                                   failureFlash: true })
+);*/
+
+app.post('/login',
+  passport.authenticate('local'),
+  function(req, res) {
+    console.log("Llego aqui y todo va bien");
+    res.redirect('http://localhost:8100/#/app/loginCredentials');
+  });
+
+
+/*router.route('/login')
+
+	// create a bear (accessed at POST http://localhost:8080/api/bears)
+	.post(function(req, res) {
+
+		var login = new Login(); 		// create a new instance of the Login model
+		login.username = req.body.username;  // set the bears name (comes from the request, is the string field in model)
+		login.password = req.body.password;
+
+		console.log("Llego aqui");
+		console.log(login);
+		passport.authenticate('local', { successRedirect: 'http://localhost:8100/#/app/loginCredentials',
+                                   failureRedirect: 'http://localhost:8100/#/app/login',
+                                   failureFlash: true })
+	});*/
+
+
 
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', router);
+
 
 // START THE SERVER
 // =============================================================================

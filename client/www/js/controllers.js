@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['starterServices'])
 
-.controller('AppCtrl', ['$scope','$ionicModal','$timeout','loginService',function($scope, $ionicModal, $timeout, loginService) {
+.controller('AppCtrl', ['$scope','$ionicModal','$timeout','$http', 'loginService',function($scope, $ionicModal, $timeout, $http, loginService) {
   // Form data for the login modal
   $scope.loginData = {};
 
@@ -23,16 +23,30 @@ angular.module('starter.controllers', ['starterServices'])
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
-    loginService.getAll({},function(loginCredentialList){
-      console.log(loginCredentialList);
-    });
+    
     console.log('Doing login', $scope.loginData);
 
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
+    // Login Code
+    console.log('User: ', $scope.loginData.username);
+    console.log('Password: ', $scope.loginData.password);
+
+    //Enviamos los datos al servidor mediante $http
+    $http.post('http://localhost:8100/#/app/login', {
+      username : $scope.loginData.username,
+      password : $scope.loginData.password
+    })
+    .success(function(data, status, headers, config) {
+        console.log("todo ok");
+        console.log("status: ", status);
+      })
+    .error(function(data, status, headers, config) {
+        console.log("Todo mal");
+        console.log(data);
+        console.log("status: ", status);
+      });
+
+
+    
   };
 }])
 
