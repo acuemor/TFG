@@ -1,6 +1,6 @@
-var passport = require('passport'),LocalStrategy = require('passport-local').Strategy;
+/*var passport = require('passport'),LocalStrategy = require('passport-local').Strategy;
 
-/*Passport login*/
+//Passport login
 passport.use(new LocalStrategy(
 	  function(username, password, done) {
 		    User.findOne({ username: username }, function (err, user) {
@@ -24,4 +24,4 @@ passport.deserializeUser(function(username, done) {
   done(null,{username: username});
 });
 
-module.export = passport;
+module.export = passport;*/

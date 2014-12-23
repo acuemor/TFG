@@ -1,25 +1,30 @@
 // server.js
 
-// BASE SETUP
-// =============================================================================
+//Requirements
+var application_root = __dirname;
 
 var mongoose   = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/physiappDb'); // connect to our database
-var LoginCredentials     = require('./app/models/loginCredentials');
+
+var Users     = require('./app/models/user');
+var Fisios     = require('./app/models/fisioterapeutas');
 var Login    = require('./app/models/login');
 
 // call the packages we need
-var express    = require('express'); 		// call express
-var app        = express(); 				// define our app using express
+var express = require('express');// call express
+var path = require("path");
+var app = express(); // define our app using express
+
 var bodyParser = require('body-parser');
 
-var passport = require('./auth');
+//Database Connection
+mongoose.connect('mongodb://localhost:27017/physiappDb'); 
 
-//Inicio borrar
-var passport = require('passport'),LocalStrategy = require('passport-local').Strategy;
+// configure app to use bodyParser()
+// this will let us get the data from a POST
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-
-// // Enables CORS
+ // Enables CORS
 var enableCORS = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
@@ -34,161 +39,272 @@ var enableCORS = function(req, res, next) {
     }
 };
  
- 
 // enable CORS!
 app.use(enableCORS);
+
+
+
+
+/*****************************Inicio borrar*****************************************/
+
+var passport = require('passport'),BearerStrategy = require('passport-http-bearer').Strategy;
+
+
+
+/*Passport login*/
+passport.use(new BearerStrategy(
+  function(token, done) {
+  	console.log("Passport Use");
+    token.findOne({ token: token }, function (err, user) {
+      if (err) { 
+      	console.log("He entrado en passport use y hay un error");
+      	return done(err); 
+      }
+      if (!user) { 
+      	console.log("He entrado en passport use, y hay un error con el usuario");
+      	return done(null, false); 
+      }
+      console.log("He entrado en passport use y todo va bien, sin lógica de usuario");
+      return done(null, user, { scope: 'read' });
+    });
+  }
+));
+
+
+/*passport.use(new LocalStrategy(
+	  function(username, password, done) {
+
+	  	passport.serializeUser(function(username, done) {
+		  done(null, username);
+		});
+
+		console.log("Hurraaa, estoy dentro del passport use");
+	  	console.log("El usuario introducido es: " , username);
+	  	console.log("El password introducido es: " , password);
+
+		Login.findOne({ username: username }, function (err, user) {
+		      if (err) { 
+		      	return done(err); 
+		      }
+		      else if(user){
+		      	return done(null, user);
+		      }
+		      else{
+		      	return done(null, false, { message: 'Incorrect username or password.' });
+		      }
+    	});
+		
+		return done(null, username);
+
+	  }
+));*/
+
+
+
+
+passport.deserializeUser(function(username, done) {
+  done(null,{username: username});
+});
 
 //Passport initialization
 app.use(passport.initialize());  
 app.use(passport.session());  
 
-// configure app to use bodyParser()
-// this will let us get the data from a POST
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-//app.use(express.cookieParser());
+/*****************************Fin borrar*****************************************/
 
 
-var port = process.env.PORT || 8080; 		// set our port
 
-// ROUTES FOR OUR API
-// =============================================================================
-var router = express.Router(); 				// get an instance of the express Router
 
-// middleware to use for all requests
-router.use(function(req, res, next) {
-	// do logging
-	console.log('Something is happening.');
-	next(); // make sure we go to the next routes and don't stop here
+app.get('/api', function (req, res) {
+  res.send('REST API is running');
 });
 
-// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-router.get('/', function(req, res) {
-	res.json({ message: 'hooray! welcome to our api!' });	
+/***Users CRUD Operations***/
+
+//Get user list
+app.get('/api/users',function (req, res) {
+	Users.find(function(err, u) {
+			if (err)
+				res.send(err);
+
+			res.json(u);
+		});
 });
 
-// more routes for our API will happen here
+//Get an user by id
+app.get('/api/users/:id', function (req, res) {
+	Users.findById(req.params.id, function(err, u) {
+			if (err)
+				res.send(err);
+			res.json(u);
+		});
+});
 
-//Añadimos las rutas (operaciones CRUD)
+//Post one user
+app.post('/api/users', function (req, res) {
+	var u = new Users(); 
+		u.username = req.body.username;  
+		u.age = req.body.age;
 
-// on routes that end in /bears
-// ----------------------------------------------------
-router.route('/loginCredentials')
-
-	// create a bear (accessed at POST http://localhost:8080/api/bears)
-	.post(function(req, res) {
 		
-		var lc = new LoginCredentials(); 		// create a new instance of the Bear model
-		lc.username = req.body.username;  // set the bears name (comes from the request, is the string field in model)
-		lc.pass = req.body.pass;
-
-		// save the bear and check for errors
-		lc.save(function(err) {
+		u.save(function(err) {
 			if (err)
 				res.send(err);
 
-			res.json({ message: 'User credentials created!' });
+			res.json({ message: 'User created!' });
 		});
-		
-	})
+});
 
-	// get all the bears (accessed at GET http://localhost:8080/api/bears)
-	.get(function(req, res) {
-		LoginCredentials.find(function(err, lcs) {
-			if (err)
-				res.send(err);
-
-			res.json(lcs);
-		});
-	});
-
-	// on routes that end in /bears/:bear_id
-// ----------------------------------------------------
-router.route('/loginCredentials/:loginCredentials_id')
-
-	// get the user login credentials with that id (accessed at GET http://localhost:8080/api/loginCredentials/:loginCredentials_id). Por ej: http://localhost:8080/api/loginCredentials/547b312e1537d34c05000001
-	.get(function(req, res) {
-		LoginCredentials.findById(req.params.loginCredentials_id, function(err, lc) {
-			if (err)
-				res.send(err);
-			res.json(lc);
-		});
-	})
-
-	// update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
-	.put(function(req, res) {
-
-		// use our bear model to find the bear we want
-		LoginCredentials.findById(req.params.loginCredentials_id, function(err, lc) {
+//Update a single user
+app.put('/api/users/:id', function (req, res){
+		Users.findById(req.params.id, function(err, u) {
 
 			if (err)
 				res.send(err);
 
-			lc.username = req.body.username; 	// update the bears info
-			lc.pass = req.body.pass;
+			u.username = req.body.username; 	
+			u.age = req.body.age;
 
-			// save the bear
-			lc.save(function(err) {
+			u.save(function(err) {
 				if (err)
 					res.send(err);
 
-				res.json({ message: 'User credentials updated!' });
+				res.json({ message: 'User updated!' });
 			});
 
 		});
-	})
+});
 
-	// delete the bear with this id (accessed at DELETE http://localhost:8080/api/bears/:bear_id)
-	.delete(function(req, res) {
-		LoginCredentials.remove({
-			_id: req.params.loginCredentials_id
+//Delete a single user
+app.delete('/api/users/:id',function(req, res){
+	Users.remove({
+			_id: req.params.id
 		}, function(err, lc) {
 			if (err)
 				res.send(err);
 
 			res.json({ message: 'Successfully deleted' });
 		});
-	});
+});
 
 
-/*Handle the login request with authenticate method*/
-/*app.post('/login',
-  passport.authenticate('local', { successRedirect: 'http://localhost:8100/#/app/loginCredentials',
-                                   failureRedirect: 'http://localhost:8100/#/app/login',
-                                   failureFlash: true })
-);*/
 
+
+/***Fisios CRUD Operations***/
+
+//Get fisios list
+app.get('/api/fisios',function (req, res) {
+	Fisios.find(function(err, f) {
+			if (err)
+				res.send(err);
+
+			res.json(f);
+		});
+});
+
+//Get a fisio by id
+app.get('/api/fisios/:id', function (req, res) {
+	Fisios.findById(req.params.id, function(err, f) {
+			if (err)
+				res.send(err);
+			res.json(f);
+		});
+});
+
+//Post one fisio
+app.post('/api/fisios', function (req, res) {
+	var f = new Fisios(); 
+		f.username = req.body.username;  
+		f.firstName = req.body.firstName; 
+		f.lastName = req.body.lastName; 
+		f.age = req.body.age;
+		f.city = req.body.city; 
+
+		
+		f.save(function(err) {
+			if (err)
+				res.send(err);
+
+			res.json({ message: 'Fisio created!' });
+		});
+});
+
+//Update a single fisio
+app.put('/api/fisios/:id', function (req, res){
+		Fisios.findById(req.params.id, function(err, f) {
+
+			if (err)
+				res.send(err);
+
+			f.username = req.body.username;  
+			f.firstName = req.body.firstName; 
+			f.lastName = req.body.lastName; 
+			f.age = req.body.age;
+			f.city = req.body.city;
+
+			f.save(function(err) {
+				if (err)
+					res.send(err);
+
+				res.json({ message: 'Fisio updated!' });
+			});
+
+		});
+});
+
+//Delete a single fisio
+app.delete('/api/fisios/:id',function(req, res){
+	Fisios.remove({
+			_id: req.params.id
+		}, function(err, lc) {
+			if (err)
+				res.send(err);
+
+			res.json({ message: 'Successfully deleted' });
+		});
+});
+
+
+
+
+
+/***Login CRUD Operations***/
+//Check users credentials
 app.post('/login',
-  passport.authenticate('local'),
+  passport.authenticate('bearer', { session: false }),
   function(req, res) {
-    console.log("Llego aqui y todo va bien");
-    res.redirect('http://localhost:8100/#/app/loginCredentials');
-  });
+    console.log("Usuario autorizado para entrar en la aplicacion");
+    res.redirect('http://localhost:8100');
+});
+
+//Get user credentials
+app.get('/login', function (req, res) {
+	Login.find(function(err, l) {
+			if (err)
+				res.send(err);
+
+			res.json(l);
+		});
+});
+
+//Post one user
+/*app.post('/api/login', function (req, res) {
+	var u = new Login(); 
+		u.username = req.body.username;  
+		u.password = req.body.password;
+
+		
+		u.save(function(err) {
+			if (err)
+				res.send(err);
+
+			res.json({ message: 'User created!' });
+		});
+});*/
 
 
-/*router.route('/login')
+var port = process.env.PORT || 8080; // set our port
 
-	// create a bear (accessed at POST http://localhost:8080/api/bears)
-	.post(function(req, res) {
-
-		var login = new Login(); 		// create a new instance of the Login model
-		login.username = req.body.username;  // set the bears name (comes from the request, is the string field in model)
-		login.password = req.body.password;
-
-		console.log("Llego aqui");
-		console.log(login);
-		passport.authenticate('local', { successRedirect: 'http://localhost:8100/#/app/loginCredentials',
-                                   failureRedirect: 'http://localhost:8100/#/app/login',
-                                   failureFlash: true })
-	});*/
-
-
-
-
-// REGISTER OUR ROUTES -------------------------------
-// all of our routes will be prefixed with /api
-app.use('/api', router);
 
 
 // START THE SERVER

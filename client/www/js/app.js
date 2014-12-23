@@ -67,12 +67,35 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngResource'])
       }
     })
 
-    .state('app.loginCredentials', {
-      url: "/loginCredentials",
+    //Usuarios
+    .state('app.users', {
+      url: "/users",
       views: {
         'menuContent' :{
-          templateUrl: "templates/loginCredentials.html",
-          controller: 'LoginCredentialsCtrl'
+          templateUrl: "templates/usersTpl.html",
+          controller: 'UsersCtrl'
+        }
+      }
+    })
+
+    //Menu Principal
+    .state('app.mainMenu', {
+      url: "/mainMenu",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/mainMenuTpl.html",
+          controller: 'mainMenuCtrl'
+        }
+      }
+    })
+
+    //Fisios
+    .state('app.fisios', {
+      url: "/fisios",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/fisiosTpl.html",
+          controller: 'FisiosCtrl'
         }
       }
     })
@@ -87,6 +110,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngResource'])
       }
     });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/loginCredentials');
+  $urlRouterProvider.otherwise('/app/mainMenu');
 });
 

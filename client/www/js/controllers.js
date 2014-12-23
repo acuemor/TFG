@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['starterServices'])
 
-.controller('AppCtrl', ['$scope','$ionicModal','$timeout','$http', 'loginService',function($scope, $ionicModal, $timeout, $http, loginService) {
+.controller('AppCtrl', ['$scope','$ionicModal','$timeout','$http', 'usersService','fisiosService', function($scope, $ionicModal, $timeout, $http, usersService, fisiosService) {
   // Form data for the login modal
   $scope.loginData = {};
 
@@ -31,7 +31,7 @@ angular.module('starter.controllers', ['starterServices'])
     console.log('Password: ', $scope.loginData.password);
 
     //Enviamos los datos al servidor mediante $http
-    $http.post('http://localhost:8100/#/app/login', {
+    $http.post('http://localhost:8080/login', {
       username : $scope.loginData.username,
       password : $scope.loginData.password
     })
@@ -61,10 +61,23 @@ angular.module('starter.controllers', ['starterServices'])
   ];
 })
 
-.controller('LoginCredentialsCtrl', ['$scope','$ionicModal','$timeout','loginService',function($scope, $ionicModal, $timeout, loginService) {
-  $scope.credentials = loginService.getAll({},function(loginCredentialList){
-    console.log(loginCredentialList);
+//Users Controller
+.controller('UsersCtrl', ['$scope','$ionicModal','$timeout','usersService',function($scope, $ionicModal, $timeout, usersService) {
+  $scope.usersScope = usersService.getAll({},function(usersList){
+    console.log(usersList);
   });
+}])
+
+//Fisios Controller
+.controller('FisiosCtrl', ['$scope','$ionicModal','$timeout','fisiosService',function($scope, $ionicModal, $timeout, fisiosService) {
+  $scope.fisiosScope = fisiosService.getAll({},function(fisiosList){
+    console.log(fisiosList);
+  });
+}])
+
+//Main Menu Controller
+.controller('mainMenuCtrl', ['$scope','$ionicModal','$timeout',function($scope, $ionicModal, $timeout) {
+  
 }])
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
