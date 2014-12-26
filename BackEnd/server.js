@@ -9,6 +9,9 @@ var Users     = require('./app/models/user');
 var Fisios     = require('./app/models/fisioterapeutas');
 var Login    = require('./app/models/login');
 
+//Configuration file
+var config = require('./config/default');
+
 // call the packages we need
 var express = require('express');// call express
 var path = require("path");
@@ -16,8 +19,8 @@ var app = express(); // define our app using express
 
 var bodyParser = require('body-parser');
 
-//Database Connection
-mongoose.connect('mongodb://localhost:27017/physiappDb'); 
+//Database Connection (Here config file example use \m/ Rocks!)
+mongoose.connect(config.database.path); 
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
