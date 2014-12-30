@@ -1,7 +1,7 @@
 var express = require('express');
 var path = require("path");
 var bodyParser = require('body-parser');
-
+var chalk = require('chalk');
 function setup(cfg) {
   var app = express();
   // configure app to use bodyParser()
@@ -26,7 +26,9 @@ function setup(cfg) {
   app.use(enableCORS);
   var port = process.env.PORT || cfg.port; // set our port
   app.listen(port);
-  console.log('Magic happens on port ' + port);
+  var message = "[OK] Server running on port: ";
+  log.info(message + port);
+  console.log(chalk.green(message) + port);
   return app;
 }
 

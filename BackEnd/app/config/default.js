@@ -3,8 +3,8 @@ exports = module.exports = data = {
     "port" : "8080"
   },
   "database": {
-    "host": "mongodb://localhost:27017/",
-    "database": "physiappDb"
+    "host": "localhost",
+    "name": "physiappDb"
   },
   logs: {
     "file": __dirname + "../../../logs/app.log",

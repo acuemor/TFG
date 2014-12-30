@@ -16,6 +16,7 @@
     "passport-local": "~0.1.6",
     "winston": "~0.8.3",
     "winston-request-logger": "~1.0.7",
-    "walk": "~2.3.4"
+    "walk": "~2.3.4",
+    "chalk": "~0.5.1"
   }
 }

@@ -1,5 +1,3 @@
-// server.js
-
 //Requirements
 var application_root = __dirname;
 //Configuration file
@@ -8,7 +6,7 @@ var config = require('../app/config/default');
 var activateLogging = require("../lib/logging")(config.logs);
 // Database connection
 var mongo = require('../lib/mongo')(config.database);
-
+// Authomatic services files loader
 sitemap = require('../lib/sitemap')(config.services);
 
 
@@ -16,8 +14,6 @@ sitemap = require('../lib/sitemap')(config.services);
 // =============================================================================
 // Global variables
 global.app = require('../lib/server')(config.server);
-
-
 
 
 

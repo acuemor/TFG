@@ -1,4 +1,5 @@
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
+var chalk = require('chalk');
 exports = module.exports = mongoMain;
 function mongoMain(mongoCfg) {
   // MONGODB MODEL EXTENSIONS /////////////////////////////////////////////////
@@ -22,11 +23,13 @@ function mongoMain(mongoCfg) {
 //    });
 //  };
   // MONGODB CONNECTION //////////////////////////////////////////////////////////
-  mongoose.connect(mongoCfg.host, mongoCfg.databaseName);
+  mongoose.connect(mongoCfg.host, mongoCfg.name);
   var db = mongoose.connection;
   db.on('error', console.error.bind(console, '[FAIL] Database connection error:'));
   db.once('open', function callback() {
-    var message = "[OK] Connected to database.";
-    log.info("mongoose.connect", message);
+    var message = "[OK] Connected to database: ";
+    log.info(message + JSON.stringify(mongoCfg));
+    console.log(chalk.green(message) + JSON.stringify(mongoCfg));
   });
-};
+}
+;
