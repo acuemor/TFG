@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var chalk = require('chalk');
+var tfgConsole = require('./utils/tfgConsole');
 exports = module.exports = mongoMain;
 function mongoMain(mongoCfg) {
   // MONGODB MODEL EXTENSIONS /////////////////////////////////////////////////
@@ -27,9 +27,7 @@ function mongoMain(mongoCfg) {
   var db = mongoose.connection;
   db.on('error', console.error.bind(console, '[FAIL] Database connection error:'));
   db.once('open', function callback() {
-    var message = "[OK] Connected to database: ";
-    log.info(message + JSON.stringify(mongoCfg));
-    console.log(chalk.green(message) + JSON.stringify(mongoCfg));
+    tfgConsole.info("[OK] Connected to database: ", JSON.stringify(mongoCfg));
   });
 }
 ;

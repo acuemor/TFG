@@ -1,7 +1,7 @@
 var express = require('express');
 var path = require("path");
 var bodyParser = require('body-parser');
-var chalk = require('chalk');
+var tfgConsole = require('./utils/tfgConsole');
 function setup(cfg) {
   var app = express();
   // configure app to use bodyParser()
@@ -26,9 +26,7 @@ function setup(cfg) {
   app.use(enableCORS);
   var port = process.env.PORT || cfg.port; // set our port
   app.listen(port);
-  var message = "[OK] Server running on port: ";
-  log.info(message + port);
-  console.log(chalk.green(message) + port);
+  tfgConsole.info("[OK] Server running on port: ", port);
   return app;
 }
 
