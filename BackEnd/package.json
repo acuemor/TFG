@@ -1,18 +1,21 @@
 {
   "name": "node-api",
-  "main": "server.js",
+  "main": "app.js",
   "dependencies": {
     "bcrypt-nodejs": "latest",
     "body-parser": "~1.0.1",
     "connect-flash": "~0.1.1",
     "cookie-parser": "~1.0.0",
     "ejs": "~0.8.5",
-    "express": "~4.0.0",
+    "express": ">= 0.0.0",
     "method-override": "~1.0.0",
     "mongoose": "~3.6.13",
     "morgan": "~1.0.0",
-    "passport": "~0.1.17",
-    "passport-http-bearer": "^1.0.1",
-    "passport-local": "~0.1.6"
+    "passport": ">= 0.0.0",
+    "passport-http-bearer": ">= 0.0.0",
+    "passport-local": "~0.1.6",
+    "winston": "~0.8.3",
+    "winston-request-logger": "~1.0.7",
+    "walk": "~2.3.4"
   }
 }
