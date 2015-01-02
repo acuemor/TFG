@@ -2,16 +2,16 @@
 
 //Desde aquí llamo a los métodos CRUD de mi RestService
 
-angular.module('starterServices', ['ngResource'])
+angular.module('starterServices', ['ngResource', 'starterConfiguration'])
 
-.factory('usersService',['$resource',function($resource){
-	return $resource('http://localhost:8080/api/users',{},{
-		getAll:{method:'GET', isArray:true}
-	});
-}])
+        .factory('usersService', ['$resource', 'CONFIG', function($resource, CONFIG) {
+    return $resource(CONFIG.API_END_POINT + '/api/users', {}, {
+      getAll: {method: 'GET', isArray: true}
+    });
+  }])
 
-.factory('fisiosService',['$resource',function($resource){
-	return $resource('http://localhost:8080/api/fisios',{},{
-		getAll:{method:'GET', isArray:true}
-	});
-}]);
+        .factory('fisiosService', ['$resource', 'CONFIG', function($resource, CONFIG) {
+    return $resource(CONFIG.API_END_POINT + '/api/fisios', {}, {
+      getAll: {method: 'GET', isArray: true}
+    });
+  }]);
