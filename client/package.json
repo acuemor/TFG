@@ -1,7 +1,8 @@
 {
-  "name": "client",
+  "name": "TFG-Client",
   "version": "1.0.0",
   "description": "client: An Ionic project",
+  "repository": "https://github.com/acuemor/TFG/tree/master/client",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^0.7.1",

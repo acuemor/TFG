@@ -1,7 +1,7 @@
 //Requirements
 var application_root = __dirname;
 //Configuration file
-var config = require('../app/config/default');
+var config = require('../config/default');
 // Log files system
 var activateLogging = require("../lib/logging")(config.logs);
 // Database connection

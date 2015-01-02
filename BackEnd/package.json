@@ -1,6 +1,8 @@
 {
-  "name": "node-api",
-  "main": "app.js",
+  "name": "TFG-Backend",
+  "version" : "0.0.1",
+  "main": "index.js",
+  "repository" : "https://github.com/acuemor/TFG/tree/master/BackEnd",
   "dependencies": {
     "bcrypt-nodejs": "latest",
     "body-parser": "~1.0.1",

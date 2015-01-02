@@ -1,1 +1,1 @@
-var scraper = require("./lib/app");
+var scraper = require("./app/lib/app");
