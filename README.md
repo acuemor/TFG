@@ -11,3 +11,14 @@ Start server:
 ```
 $ node index.js
 ```
+
+## Backend
+
+Install dependencies:
+```
+$ bower install
+```
+Start browser emulation:
+```
+$ ionic serve
+```
