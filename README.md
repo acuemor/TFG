@@ -12,7 +12,7 @@ Start server:
 $ node index.js
 ```
 
-## Backend
+## Client
 
 Install dependencies:
 ```
