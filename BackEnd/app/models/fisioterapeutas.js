@@ -8,7 +8,8 @@ var FisioterapeutasSchema   = new Schema({
 	firstName: String,
 	lastName: String,
 	age: Number,
-	city: String
+	city: String,
+	stars: [Number]
 
 });
 

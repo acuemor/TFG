@@ -1,31 +1,40 @@
 var Fisios = require('../../app/models/fisioterapeutas');
+var tfgConsole = require('../../app/lib/utils/tfgConsole');
+var express = require('express');
+var router = express.Router();
 //Get fisios list
-app.get('/api/fisios', function(req, res) {
+router.get('/', function(req, res) {
   Fisios.find(function(err, f) {
-    if (err)
+    if (err){
       res.send(err);
-
+      tfgConsole.error("[ERROR] Get Fisios: ", err);
+    }
     res.json(f);
+    tfgConsole.info("[OK] Get Fisios: ", f);
   });
 });
 
 //Get a fisio by id
-app.get('/api/fisios/:id', function(req, res) {
+router.get('/:id', function(req, res) {
   Fisios.findById(req.params.id, function(err, f) {
-    if (err)
+    if (err){
       res.send(err);
+      tfgConsole.error("[ERROR] Get Fisio by id: ", err);
+    }
     res.json(f);
+    tfgConsole.info("[OK] Get Fisio by id: ", f);
   });
 });
 
 //Post one fisio
-app.post('/api/fisios', function(req, res) {
+router.post('/', function(req, res) {
   var f = new Fisios();
-  f.username = req.body.username;
-  f.firstName = req.body.firstName;
-  f.lastName = req.body.lastName;
-  f.age = req.body.age;
-  f.city = req.body.city;
+  f.username = req.param('username');
+  f.firstName = req.param('firstName');
+  f.lastName = req.param('lastName');
+  f.age = req.param('age');
+  f.city = req.param('city');
+  f.stars.unshift(req.param('stars')); 
 
 
   f.save(function(err) {
@@ -37,17 +46,18 @@ app.post('/api/fisios', function(req, res) {
 });
 
 //Update a single fisio
-app.put('/api/fisios/:id', function(req, res) {
+router.put('/:id', function(req, res) {
   Fisios.findById(req.params.id, function(err, f) {
 
     if (err)
       res.send(err);
 
-    f.username = req.body.username;
-    f.firstName = req.body.firstName;
-    f.lastName = req.body.lastName;
-    f.age = req.body.age;
-    f.city = req.body.city;
+    f.username = req.param('username');
+    f.firstName = req.param('firstName');
+    f.lastName = req.param('lastName');
+    f.age = req.param('age');
+    f.city = req.param('city');
+    f.stars.unshift(req.param('stars')); 
 
     f.save(function(err) {
       if (err)
@@ -60,7 +70,7 @@ app.put('/api/fisios/:id', function(req, res) {
 });
 
 //Delete a single fisio
-app.delete('/api/fisios/:id', function(req, res) {
+router.delete('/:id', function(req, res) {
   Fisios.remove({
     _id: req.params.id
   }, function(err, lc) {
@@ -71,4 +81,5 @@ app.delete('/api/fisios/:id', function(req, res) {
   });
 });
 
+module.exports = router;
 

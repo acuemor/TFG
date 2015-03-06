@@ -1,0 +1,16 @@
+<ion-view title="Fisioterapeutas a domicilio">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-content class="has-header">
+    <div class="list">
+      <a class="item item-thumbnail-left" ng-repeat="fisio in fisiosScope" ng-href="#/app/fisiosDesc">
+        <img src="img/nevermind.jpg">
+        <h2>{{fisio.firstName}} {{fisio.lastName}}</h2>
+        <p>{{fisio.city}}</p>
+        <!-- {{fisio.stars}} contiene el array con el número de estrellas que tiene el fisioterapeuta -->
+        <span ng-repeat="star in fisio.stars"><img src="img/stars.png"></span>
+      </a>
+    </div>
+  </ion-content>
+</ion-view>

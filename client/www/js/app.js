@@ -94,7 +94,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngResource'])
       url: "/fisios",
       views: {
         'menuContent' :{
-          templateUrl: "templates/fisiosTpl.html",
+          templateUrl: "templates/fisioterapeuta/fisiosTpl.html",
+          controller: 'FisiosCtrl'
+        }
+      }
+    })
+
+    .state('app.fisiosDesc', {
+      url: "/fisiosDesc",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/fisioterapeuta/fisiosDescTpl.html",
           controller: 'FisiosCtrl'
         }
       }

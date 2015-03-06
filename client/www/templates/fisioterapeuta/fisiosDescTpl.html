@@ -1,0 +1,55 @@
+<ion-view title="Descripción Fisioterapeutas">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-content class="has-header">
+    <!-- <div class="list">
+      <p>{{fisiosDescScope}}</p>
+      <a class="item item-thumbnail-left" ng-href="#">
+        <p>{{fisiosDescScope.firstName}} {{fisiosDescScope.lastName}}</p>   
+        <p>{{fisiosDescScope.city}}</p>
+      </a>
+    </div> -->
+
+    <div class="list card">
+
+      <div class="item item-avatar">
+        <img src="img/nevermind.jpg">
+        <h2>{{fisiosDescScope.firstName}} {{fisiosDescScope.lastName}}</h2>
+        <p>November 05, 1955</p> <!-- Estático. Pedir fecha nacimiento en formulario de registro -->
+      </div>
+
+      <div class="item item-body">
+        <!-- <img class="full-image" src="img/nevermind.jpg"> -->
+        <span>
+          Diplomado en Fisioterapia por la Universidad de Sevilla, colegiado en el Ilustre Colegio Profesional de Fisioterapia de Andalucía (n. 1234)y asociado a la red nacional de Fisioterapia Sin Red (n.123).
+   
+          Convencido de la importancia del crecimiento de la Fisioterapia basándose en una atención de calidad desde la evidencia científica y el razonamiento clínico. Su intención de ofrecer un tratamiento de calidad le lleva a mantenerse en continua formación. Es, además, un fisioterapeuta muy preocupado por la comunicación entre profesionales, lo que le llevó a adentrarse en el movimiento fisioterapéutico nacional "Fisioterapia Sin Red"
+           
+          También se le conoce por su incesante actividad en redes sociales, donde participa y aporta su visión de la Fisioterapia de forma constante. Es un apasionado del crecimiento de la profesión mediante herramientas 2.0.
+        </span>
+        <p>
+          <a href="#" class="subdued">1 Like</a>
+          <a href="#" class="subdued">5 Valoraciones de usuarios</a>
+        </p>
+      </div>
+
+      <div class="item tabs tabs-secondary tabs-icon-left">
+        <a class="tab-item" href="#">
+          <i class="icon ion-thumbsup"></i>
+          ¿Te gusta?
+        </a>
+        <a class="tab-item" href="#">
+          <i class="icon ion-chatbox"></i>
+          Valoraciones
+        </a>
+        <a class="tab-item" href="#">
+          <i class="ion-checkmark-round"></i>
+          Coger Cita
+        </a>
+      </div>
+
+  </div>
+
+  </ion-content>
+</ion-view>

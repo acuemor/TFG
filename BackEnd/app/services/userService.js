@@ -1,7 +1,11 @@
 /***Users CRUD Operations***/
 var Users = require('../../app/models/user');
+var tfgConsole = require('../../app/lib/utils/tfgConsole');
+var express = require('express');
+var router = express.Router();
+
 //Get user list
-app.get('/api/users', function(req, res) {
+router.get('/', function(req, res) {
   Users.find(function(err, u) {
     if (err)
       res.send(err);
@@ -11,7 +15,7 @@ app.get('/api/users', function(req, res) {
 });
 
 //Get an user by id
-app.get('/api/users/:id', function(req, res) {
+router.get('/:id', function(req, res) {
   Users.findById(req.params.id, function(err, u) {
     if (err)
       res.send(err);
@@ -20,29 +24,30 @@ app.get('/api/users/:id', function(req, res) {
 });
 
 //Post one user
-app.post('/api/users', function(req, res) {
+router.post('/', function(req, res) {
   var u = new Users();
-  u.username = req.body.username;
-  u.age = req.body.age;
-
+  u.username = req.param('username');
+  u.pass = req.param('pass');  
 
   u.save(function(err) {
-    if (err)
+    if (err){
+      tfgConsole.error("[ERROR] Post user: ", err);
       res.send(err);
-
+    }      
+    tfgConsole.info("[OK] Post user: ", u);
     res.json({message: 'User created!'});
   });
 });
 
 //Update a single user
-app.put('/api/users/:id', function(req, res) {
+router.put('/:id', function(req, res) {
   Users.findById(req.params.id, function(err, u) {
 
     if (err)
       res.send(err);
 
-    u.username = req.body.username;
-    u.age = req.body.age;
+    u.username = req.param('username');
+    u.pass = req.param('pass');
 
     u.save(function(err) {
       if (err)
@@ -55,7 +60,7 @@ app.put('/api/users/:id', function(req, res) {
 });
 
 //Delete a single user
-app.delete('/api/users/:id', function(req, res) {
+router.delete('/:id', function(req, res) {
   Users.remove({
     _id: req.params.id
   }, function(err, lc) {
@@ -65,3 +70,5 @@ app.delete('/api/users/:id', function(req, res) {
     res.json({message: 'Successfully deleted'});
   });
 });
+
+module.exports = router;

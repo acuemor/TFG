@@ -19,6 +19,13 @@
     "winston": "~0.8.3",
     "winston-request-logger": "~1.0.7",
     "walk": "~2.3.4",
-    "chalk": "~0.5.1"
+    "chalk": "~0.5.1",
+    "static-favicon": "~1.0.0",
+    "cookie-parser": "~1.0.1",
+    "debug": "~0.7.4",
+    "hjs": "~0.0.6",
+    "moment":"~2.7.0",
+    "node-cryptojs-aes":"~0.4.0",
+    "bearer":"~0.0.11"
   }
 }
