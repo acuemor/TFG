@@ -4,7 +4,6 @@ TFG
 
 Install dependencies:
 ```
-$ npm install
 $ bower install
 ```
 Start server:
@@ -16,6 +15,7 @@ $ node index.js
 
 Install dependencies:
 ```
+$ npm install
 $ bower install
 ```
 Start browser emulation:
